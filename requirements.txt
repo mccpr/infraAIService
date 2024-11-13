@@ -18,9 +18,7 @@ fastembed==0.3.6
 setuptools~=74.1.2
 psycopg~=3.2.1
 pgvector~=0.3.3
-sentence_transformers
 psycopg_pool
 psycopg[binary]
 pgvector~=0.3.3
-openai==1.43.1
 python-multipart
