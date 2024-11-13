@@ -2,9 +2,8 @@
 
 import json
 import re
+import requests
 from copy import deepcopy
-
-from openai import OpenAI
 
 from infra_ai_service.config.config import settings
 from infra_ai_service.service.spec_repair.utils import (
@@ -79,66 +78,66 @@ class SpecBot:
     def __init__(self):
         api_key = settings.OPENAI_API_KEY
         base_url = settings.OPENAI_BASE_URL
-        self.client = OpenAI(api_key=api_key, base_url=base_url)
         self.model = settings.SPECBOT_AI_MODEL
 
     def repair(self, spec_lines: list, log_lines: list):
-        """
-        repair spec file content
+        # """
+        # repair spec file content
 
-        :param spec_lines: content of error spec file
-        :type list
+        # :param spec_lines: content of error spec file
+        # :type list
 
-        :param log_lines: content of error log
-        :type list
+        # :param log_lines: content of error log
+        # :type list
 
-        :return
-        :type tuple(str, bool, list(str), str)
+        # :return
+        # :type tuple(str, bool, list(str), str)
 
-        """
-        spec = self._preprocess_spec(deepcopy(spec_lines))
-        log = self._preprocess_log(log_lines)
+        # """
+        # spec = self._preprocess_spec(deepcopy(spec_lines))
+        # log = self._preprocess_log(log_lines)
 
-        tools = self._prepare_tools()
-        messages = self._prepare_messages(spec, log)
-        fault_segment = None
-        repaired_segment = None
+        # tools = self._prepare_tools()
+        # messages = self._prepare_messages(spec, log)
+        # fault_segment = None
+        # repaired_segment = None
 
-        is_repaired = False
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                tools=tools,
-                tool_choice={
-                    "type": "function",
-                    "function": {"name": "repair_spec"},
-                },
-            )
-            tool_calls = response.choices[0].message.tool_calls
-            arguments = tool_calls[0].function.arguments
-            arguments = json.loads(arguments)
-            suggestion = arguments.get("suggestion", None)
-            fault_segment = arguments.get("fault_segment", None)
-            repaired_segment = arguments.get("repaired_segment", None)
+        # is_repaired = False
+        # try:
+        #     response = self.client.chat.completions.create(
+        #         model=self.model,
+        #         messages=messages,
+        #         tools=tools,
+        #         tool_choice={
+        #             "type": "function",
+        #             "function": {"name": "repair_spec"},
+        #         },
+        #     )
+        #     tool_calls = response.choices[0].message.tool_calls
+        #     arguments = tool_calls[0].function.arguments
+        #     arguments = json.loads(arguments)
+        #     suggestion = arguments.get("suggestion", None)
+        #     fault_segment = arguments.get("fault_segment", None)
+        #     repaired_segment = arguments.get("repaired_segment", None)
 
-            if suggestion and fault_segment and repaired_segment:
-                is_repaired, repaired_spec_lines = repair_spec_impl(
-                    deepcopy(spec_lines), fault_segment, repaired_segment
-                )
-        except Exception as e:
-            raise Exception(f"repair call ai server err, [{e}]")
+        #     if suggestion and fault_segment and repaired_segment:
+        #         is_repaired, repaired_spec_lines = repair_spec_impl(
+        #             deepcopy(spec_lines), fault_segment, repaired_segment
+        #         )
+        # except Exception as e:
+        #     raise Exception(f"repair call ai server err, [{e}]")
 
-        if is_repaired:
-            patch = get_patch(spec_lines, repaired_spec_lines)
-        else:
-            patch = None
-        log_content = save_log(
-            is_repaired, log, suggestion, fault_segment, patch
-        )
+        # if is_repaired:
+        #     patch = get_patch(spec_lines, repaired_spec_lines)
+        # else:
+        #     patch = None
+        # log_content = save_log(
+        #     is_repaired, log, suggestion, fault_segment, patch
+        # )
 
-        repaired_spec_str = "".join(repaired_spec_lines)
-        return suggestion, is_repaired, repaired_spec_str, log_content
+        # repaired_spec_str = "".join(repaired_spec_lines)
+        # return suggestion, is_repaired, repaired_spec_str, log_content
+        pass
 
     def repair_pro(self, spec_lines, log_lines, doc_content=None):
         """
