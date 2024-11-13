@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # 模型名称配置项
     MODEL_NAME: str = "model-name-here"
 
-    PROXY_URL: str = "http://139.9.248.39:30312"
+    PROXY_URL: str = "http://139.9.248.39:30412"
 
     # 新增的配置项
     VECTOR_EXTENSION: str = ""
