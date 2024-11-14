@@ -1,10 +1,13 @@
+import logging
 import requests
+
 from fastapi import HTTPException
 
 from infra_ai_service.model.model import EmbeddingOutput
 from infra_ai_service.sdk import pgvector
 from infra_ai_service.config.config import settings
 
+logger = logging.getLogger(__name__)
 
 async def create_embedding(content, os_version, name):
     try:
@@ -19,7 +22,7 @@ async def create_embedding(content, os_version, name):
             "encoding_format": "float"
         }
         response = requests.post(url, headers=headers, json=body)
-
+        logger.info("embedding response %s", response.embeddings)
         async with pgvector.pool.connection() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(

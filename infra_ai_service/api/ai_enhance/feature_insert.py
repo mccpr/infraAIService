@@ -47,10 +47,11 @@ async def feature_insert(request: FeatureInsertRequest = Body(...)):
         rpm_decompress_dir = process_src_rpm_from_url(
             request.src_rpm_url
         )
+        logger.info("process src rpm finished")
         feature = extract_spec_features(
             rpm_decompress_dir,
         )
-
+        logger.info("extrac spec features finished")
         name = feature[1]["name"]
         if name != request.package_name:
             logger.debug(f"name difference {name}: {request.package_name}")
