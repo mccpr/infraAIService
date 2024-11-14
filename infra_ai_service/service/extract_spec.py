@@ -272,6 +272,7 @@ def decompress_xml_file(feature_xml_path: str):
         cmd = ['gzip', '-d', feature_xml_path]
         dep_res = subprocess.run(cmd)
 
+    logger.info('decompress xml file finished')
     if dep_res.returncode != 0:
         raise ValueError(f'delete redundant dir fail: {dep_res.stderr}')
 
@@ -297,15 +298,7 @@ def check_xml_info(xml_url: str, os_version: str):
         if not os.path.exists(feature_xml_path):
             raise Exception('download xml unknown error')
 
-        xml_info = None
-
-        with open(feature_xml_path, 'r', encoding='utf-8') as file:
-            logger.info('file read start, if no '
-                        '"file read finish" after this, may need more memory')
-            feature_xml = file.read()
-            logger.info('file read finish')
-            xml_info = extract_xml_features(feature_xml)
-
+        xml_info = extract_xml_features(feature_xml_path)      
         xml_info.update({'os_version': os_version})
 
         return xml_info

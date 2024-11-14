@@ -60,9 +60,9 @@ def _get_func_with_name(name: str):
     return process_func.get(name, None)
 
 
-def extract_xml_features(content: str):
+def extract_xml_features(feature_xml_path: str):
     try:
-        metadata = ET.fromstring(content)
+        metadata = ET.parse(feature_xml_path, parser=ET.XMLParser(encoding='utf-8')).getroot()
         res = {}
         count = 1
         for package in metadata:
