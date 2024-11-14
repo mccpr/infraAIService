@@ -1,27 +1,15 @@
 import logging
-import requests
 
 from fastapi import HTTPException
 
 from infra_ai_service.model.model import EmbeddingOutput
-from infra_ai_service.sdk import pgvector
-from infra_ai_service.config.config import settings
+from infra_ai_service.sdk import pgvector,ai_proxy
 
 logger = logging.getLogger(__name__)
 
 async def create_embedding(content, os_version, name):
     try:
-        url = f"{settings.PROXY_URL}/embeddings"
-        headers = {
-                "Content-Type": "application/json"
-        }
-
-        body = {
-            "prompt": content,
-            "model": "bge-large-en-v1.5",
-            "encoding_format": "float"
-        }
-        response = requests.post(url, headers=headers, json=body)
+        response = ai_proxy.embedding(content)
         logger.info("embedding response %s", response.embeddings)
         async with pgvector.pool.connection() as conn:
             async with conn.cursor() as cur:
