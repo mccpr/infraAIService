@@ -27,6 +27,8 @@ RUN wget https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-
 # 创建符号链接，仅为 python 创建
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
+RUN pip install pgcli
+
 # 复制 requirements.txt 到容器中
 COPY requirements.txt .
 

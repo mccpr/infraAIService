@@ -1,24 +1,34 @@
-from psycopg_pool import AsyncConnectionPool
+import logging
+from psycopg_pool import ConnectionPool
 
 from infra_ai_service.common.utils import setup_database
 from infra_ai_service.config.config import settings
 
-# 创建连接池（暂时不初始化）
+logger = logging.getLogger(__name__)
+
 pool = None
 
 
-async def setup_model_and_pool():
+def setup_model_and_pool():
     global pool
+    try:
+        conn_str = (
+            f"postgresql://{settings.DB_USER}:{settings.DB_PASSWORD}@"
+            f"{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+        )
+        pool = ConnectionPool(conn_str, min_size=5, max_size=20)
+        logger.info(f"PostgreSQL connection pool created successfully.")
 
-    # 创建异步连接池
-    conn_str = (
-        f"dbname={settings.DB_NAME} "
-        f"user={settings.DB_USER} "
-        f"password={settings.DB_PASSWORD} "
-        f"host={settings.DB_HOST} "
-        f"port={settings.DB_PORT}"
-    )
-    pool = AsyncConnectionPool(conn_str, open=True)
+        setup_database(pool)
+        logger.info("Database setup completed successfully.")
 
-    # 设置数据库
-    await setup_database(pool)
+    except Exception as e:
+        logger.error(f"Error setting up PostgreSQL connection pool: {e}", exc_info=True)
+        raise 
+
+def close_pool():
+    """close pool"""
+    global pool
+    if pool:
+        pool.close()
+        logger.info("PostgreSQL connection pool closed.")
