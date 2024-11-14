@@ -16,6 +16,8 @@ RUN yum update -y && \
     gcc \
     make \
     rpmdevtools* \
+    epel-release \
+    ripgrep \
     && yum clean all
 
 # 创建符号链接，仅为 python 创建

@@ -241,19 +241,18 @@ def _process_src_dir(src_path, data, count):
 
     if not os.path.exists(src_path):
         raise Exception('src dir not exist')
-
     cmd_list = [
-        ((f"grep -E -Irho '\\<[A-Z]+_[A-Z]+\\>' '{src_path}' "
+        ((f"rg -o --no-filename '\\<[A-Z]+_[A-Z]+\\>' '{src_path}' "
          "| sort | uniq -c | sort -nr | head -10"), 'macro_names'),
-        ((f"grep -E -Irho '\\<[a-z]+@[a-z]+\\.[a-z.]+\\>' '{src_path}' "
+        ((f"rg -o --no-filename '\\<[a-z]+@[a-z]+\\.[a-z.]+\\>' '{src_path}' "
          "| sort | uniq -c | sort -nr | head -10"), 'email_names'),
         # class_names probably don't need -I para
-        ((f"grep -Irho '[A-Z][a-z]\\{{3,\\}}[A-Z][a-z]\\{{3,\\}}' '{src_path}'"
+        ((f"rg -o --no-filename '[A-Z][a-z]\\{{3,\\}}[A-Z][a-z]\\{{3,\\}}' '{src_path}'"
           " | sort | uniq -c | sort -nr | head -10"), 'class_names'),
-        ((f"grep -E -Irho '\"/[A-Za-z.]+(/[A-Za-z.]+){{2,}}\"' '{src_path}' "
+        ((f"rg -o --no-filename '\"/[A-Za-z.]+(/[A-Za-z.]+){{2,}}\"' '{src_path}' "
          "| sort | uniq -c | sort -nr | head -10"), 'path_names'),
         (
-            ("grep -E -Irho "
+            ("rg -o --no-filename "
              "'\"(https?|ftp)://([a-zA-Z0-9-]+.)+[a-zA-Z]{2,6}(/.*)?\"' "
              f"'{src_path}' | sort | uniq -c | sort -nr | head -10"),
             'url_names')
