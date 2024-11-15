@@ -1,7 +1,6 @@
 import logging
 from psycopg_pool import ConnectionPool
 
-from infra_ai_service.common.utils import setup_database
 from infra_ai_service.config.config import settings
 
 logger = logging.getLogger(__name__)
@@ -25,6 +24,32 @@ def setup_model_and_pool():
     except Exception as e:
         logger.error(f"Error setting up PostgreSQL connection pool: {e}", exc_info=True)
         raise 
+
+
+def setup_database(pool):
+    with pool.connection() as conn:
+        conn.execute(
+            f"CREATE EXTENSION IF NOT EXISTS {settings.VECTOR_EXTENSION}"
+        )
+        conn.execute(
+            f"""
+            CREATE TABLE IF NOT EXISTS {settings.TABLE_NAME} (
+                id bigserial PRIMARY KEY,
+                content text,
+                os_version text,
+                name text,
+                embedding vector({settings.VECTOR_DIMENSION})
+            )
+            """
+        )
+        conn.execute(
+            f"""
+            CREATE INDEX IF NOT EXISTS {settings.TABLE_NAME}_content_idx
+            ON {settings.TABLE_NAME}
+            USING GIN (to_tsvector('{settings.LANGUAGE}', content))
+            """
+        )
+
 
 def close_pool():
     """close pool"""
