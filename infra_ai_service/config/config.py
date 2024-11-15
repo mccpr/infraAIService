@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     MODEL_NAME: str = "model-name-here"
 
     PROXY_URL: str = "http://139.9.248.39:30412"
+    PROXY_TOKEN: str = "AgoJikDShJgAscnQMdPardXvPACxlmxotQnJzNkaeTW"
 
     # 新增的配置项
     VECTOR_EXTENSION: str = ""
@@ -61,6 +62,7 @@ class Settings(BaseSettings):
             "DB_PORT": {"env": "DB_PORT"},
             "MODEL_NAME": {"env": "MODEL_NAME"},
             "PROXY_URL": {"env": "PROXY_URL"},
+            "PROXY_TOKEN": {"env": "PROXY_TOKEN"},
             "VECTOR_EXTENSION": {"env": "VECTOR_EXTENSION"},
             "TABLE_NAME": {"env": "TABLE_NAME"},
             "VECTOR_DIMENSION": {"env": "VECTOR_DIMENSION"},
