@@ -10,7 +10,7 @@ def embedding(content):
     url = f"{settings.PROXY_URL}/embeddings"
     headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer {settings.PROXY_TOKEN}"
+            "Authorization": f"Bearer {settings.PROXY_TOKEN}"
     }
     body = {
         "prompt": content,
