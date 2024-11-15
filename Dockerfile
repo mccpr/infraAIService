@@ -48,7 +48,7 @@ USER infra_ai_service
 
 RUN echo '#!/bin/sh' > /home/infra_ai_service/entrypoint.sh && \
     echo 'cp /app/.env /home/infra_ai_service/.env' >> /home/infra_ai_service/entrypoint.sh && \
-    echo 'python infra_ai_service/server.py > infra_ai_service.log.log 2>&1' >> /home/infra_ai_service/entrypoint.sh && \
+    echo 'python infra_ai_service/server.py > /home/infra_ai_service/infra_ai_service.log 2>&1' >> /home/infra_ai_service/entrypoint.sh && \
     chmod +x /home/infra_ai_service/entrypoint.sh
 
 # 启动FastAPI应用

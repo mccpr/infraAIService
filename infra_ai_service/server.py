@@ -9,7 +9,7 @@ def main() -> None:
     logging.basicConfig(
         level=logging.DEBUG, 
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.FileHandler("infra_ai_service.log"), logging.StreamHandler()]
+        handlers=[logging.FileHandler("/home/infra_ai_service/infra_ai_service.log"), logging.StreamHandler()]
     )
 
     uvicorn.run(
@@ -19,6 +19,7 @@ def main() -> None:
         port=settings.PORT,
         reload=settings.RELOAD,
         factory=True,
+        log_level="debug"
     )
 
 
