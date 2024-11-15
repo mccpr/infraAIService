@@ -17,7 +17,7 @@ def embedding(content):
         "model": "bge-large-en-v1.5",
         "encoding_format": "float"
     }
-    logger.info(f"embedding url: {url}  token: {settings.PROXY_TOKEN}")
+    logger.info(f"embedding url: {url}  headers: {headers}")
     response = requests.post(url, headers=headers, json=body)
     if response.status_code == 200:
         try:
