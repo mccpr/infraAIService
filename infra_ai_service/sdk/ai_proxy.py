@@ -19,5 +19,19 @@ def embedding(content):
     }
     logger.info(f"embedding url: {url}  token: {settings.PROXY_TOKEN}")
     response = requests.post(url, headers=headers, json=body)
-    logger.info(f"embedding response {response.embeddings}")
-    return response.embeddings
+    if response.status_code == 200:
+        try:
+            response_data = response.json()
+            embeddings = response_data.get("embeddings")
+            
+            if embeddings is not None:
+                return embeddings
+            else:
+                logger.error("No embeddings found in the response.")
+                raise ValueError("No embeddings found in the response.")
+        except ValueError as e:
+            logger.error(f"Failed to parse the response: {e}")
+            raise
+    else:
+        logger.error(f"Failed to get embeddings, status code: {response.status_code}")
+        raise Exception(f"Error fetching embeddings: {response.status_code}")
