@@ -1,4 +1,3 @@
-import logging
 import uvicorn
 
 from infra_ai_service.config.config import settings
@@ -6,12 +5,6 @@ from infra_ai_service.config.config import settings
 
 def main() -> None:
     """Entrypoint of the application."""
-    logging.basicConfig(
-        level=logging.DEBUG, 
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.FileHandler("/home/infra_ai_service/infra_ai_service.log"), logging.StreamHandler()]
-    )
-
     uvicorn.run(
         "core.app:get_app",
         workers=settings.WORKERS_COUNT,
