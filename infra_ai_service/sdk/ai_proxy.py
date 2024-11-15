@@ -1,13 +1,10 @@
-import logging
-import requests
 
-from fastapi import HTTPException
+import requests
+from loguru import logger
 
 from infra_ai_service.model.model import EmbeddingOutput
 from infra_ai_service.sdk import pgvector
 from infra_ai_service.config.config import settings
-
-logger = logging.getLogger(__name__)
 
 def embedding(content):
     url = f"{settings.PROXY_URL}/embeddings"

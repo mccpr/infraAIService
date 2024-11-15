@@ -6,12 +6,10 @@ import copy
 import urllib.request
 import re
 import tempfile
-import logging
+from loguru import logger
 from infra_ai_service.config.config import settings
 from infra_ai_service.service.extract_xml import extract_xml_features
 from infra_ai_service.service.utils import update_json
-
-logger = logging.getLogger(__name__)
 
 XML_INFO = None
 

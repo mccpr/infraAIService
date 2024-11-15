@@ -1,6 +1,5 @@
 # infraAIService/infra_ai_service/service/search_service.py
-import logging
-
+from loguru import logger
 from fastapi import HTTPException
 
 from infra_ai_service.model.model import (
@@ -9,8 +8,6 @@ from infra_ai_service.model.model import (
     SearchResult,
 )
 from infra_ai_service.sdk import pgvector,ai_proxy
-
-logger = logging.getLogger(__name__)
 
 
 async def prepare_vector(input_data: SearchInput):

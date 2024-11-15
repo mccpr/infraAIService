@@ -22,3 +22,4 @@ psycopg_pool
 psycopg[binary]
 pgvector~=0.3.3
 python-multipart
+loguru

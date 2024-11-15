@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-
+import re
 from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from loguru import logger
+
 
 from infra_ai_service.service.embedding_service import create_embedding
 from infra_ai_service.service.utils import convert_to_str
@@ -11,13 +13,10 @@ from infra_ai_service.service.extract_spec import (
     extract_spec_features,
     check_xml_info,
 )
-import re
-import logging
+
 import infra_ai_service.service.extract_spec as es
 
 router = APIRouter()
-
-logger = logging.getLogger(__name__)
 
 
 class FeatureInsertRequest(BaseModel):

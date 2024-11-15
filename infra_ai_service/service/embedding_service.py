@@ -1,11 +1,8 @@
-import logging
-
+from loguru import logger
 from fastapi import HTTPException
 
 from infra_ai_service.model.model import EmbeddingOutput
 from infra_ai_service.sdk import pgvector,ai_proxy
-
-logger = logging.getLogger(__name__)
 
 async def create_embedding(content, os_version, name):
     try:
@@ -14,7 +11,7 @@ async def create_embedding(content, os_version, name):
         async with pgvector.pool.connection() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(
-                    "INSERT INTO documents "
+                     "INSERT INTO documents "
                     "(content, embedding, os_version, name) "
                     "VALUES (%s, %s, %s, %s) RETURNING id",
                     (content, response.embeddings, os_version, name),

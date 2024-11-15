@@ -1,9 +1,7 @@
-import logging
+from loguru import logger
 from psycopg_pool import ConnectionPool
 
 from infra_ai_service.config.config import settings
-
-logger = logging.getLogger(__name__)
 
 pool = None
 
