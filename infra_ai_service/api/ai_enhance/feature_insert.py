@@ -46,11 +46,11 @@ async def feature_insert(request: FeatureInsertRequest = Body(...)):
         rpm_decompress_dir = process_src_rpm_from_url(
             request.src_rpm_url
         )
-        logger.info("process src rpm finished")
+        logger.info(f"process src rpm finished rpm_decompress_dir: {rpm_decompress_dir}")
         feature = extract_spec_features(
             rpm_decompress_dir,
         )
-        logger.info("extrac spec features finished")
+        logger.info(f"extrac spec features finished feature:{feature}")
         name = feature[1]["name"]
         if name != request.package_name:
             logger.debug(f"name difference {name}: {request.package_name}")
@@ -59,7 +59,7 @@ async def feature_insert(request: FeatureInsertRequest = Body(...)):
 
         ordered_feature = convert_to_str(feature[1])
         feature_str = re.sub(r"[{}[\]()@#.\':\/-]", "", str(ordered_feature))
-
+        logger.info(f"feature_str build finished:{feature_str}")
         await create_embedding(feature_str, request.os_version, name)
 
         resp_data = {

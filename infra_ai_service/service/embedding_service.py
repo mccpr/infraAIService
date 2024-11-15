@@ -7,7 +7,6 @@ from infra_ai_service.sdk import pgvector,ai_proxy
 async def create_embedding(content, os_version, name):
     try:
         response = ai_proxy.embedding(content)
-        logger.info("embedding response %s", response.embeddings)
         async with pgvector.pool.connection() as conn:
             async with conn.cursor() as cur:
                 await cur.execute(

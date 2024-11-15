@@ -269,7 +269,7 @@ def decompress_xml_file(feature_xml_path: str):
         cmd = ['gzip', '-d', feature_xml_path]
         dep_res = subprocess.run(cmd)
 
-    logger.info('decompress xml file finished')
+    logger.info(f'decompress xml file finished')
     if dep_res.returncode != 0:
         raise ValueError(f'delete redundant dir fail: {dep_res.stderr}')
 

@@ -16,6 +16,7 @@ def embedding(content):
         "model": "bge-large-en-v1.5",
         "encoding_format": "float"
     }
+    logger.info(f"embedding url: {url}")
     response = requests.post(url, headers=headers, json=body)
-    logger.info("embedding response %s", response.embeddings)
+    logger.info(f"embedding response {response.embeddings}")
     return response.embeddings

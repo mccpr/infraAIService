@@ -13,7 +13,7 @@ from infra_ai_service.sdk import pgvector,ai_proxy
 async def prepare_vector(input_data: SearchInput):
     try:
         response = ai_proxy.embedding(input_data.query_text)
-        logger.info("query text: %s embedding: %s", input_data.query_text,response.embeddings)
+        logger.info(f"query text: {input_data.query_text} embedding: {response.embeddings}")
         return response.embeddings
     except Exception as e:
         logger.error(f"prepare vector failed: {str(e)}", exc_info=True)
